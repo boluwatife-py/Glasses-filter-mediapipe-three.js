@@ -97,8 +97,8 @@ export class SceneManager {
     this.camera = new THREE.PerspectiveCamera(
       this.fov,
       this.renderer.domElement.width / this.renderer.domElement.height,
-      1.0, // near
-      10000 // far
+      1.0,
+      10000
     );
     this.camera.position.z = cameraDistance(this.renderer.domElement.height, this.fov);
   }
@@ -110,7 +110,7 @@ export class SceneManager {
 
     const needResize = canvas.width !== width || canvas.height !== height;
     if (needResize) {
-      this.renderer.setSize(width, height, false);
+      this.renderer.setSize(width, height, true);
     }
     return needResize;
   }
@@ -155,6 +155,7 @@ export class SceneManager {
   resize(videoWidth, videoHeight) {
     this.videoWidth = videoWidth;
     this.videoHeight = videoHeight;
+    this.updateCamera();
   }
 
 

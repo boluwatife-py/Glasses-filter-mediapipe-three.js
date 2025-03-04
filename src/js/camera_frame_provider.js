@@ -1,29 +1,82 @@
-import { Camera } from '@mediapipe/camera_utils';
-
-const overlay = document.getElementById("viewer-overlay");
-
 export class CameraFrameProvider {
   constructor(videoElement, onFrame) {
-    // Check if the camera is front-facing (user-facing)
-    const isFrontCamera = true; // You may need to detect this dynamically (see note below)
+    this.videoElement = videoElement;
+    this.onFrame = onFrame;
+    this.stream = null;
+    // Default to front camera
+    this.isFrontCamera = true; // You may need to detect this dynamically
     
-    const camera = new Camera(videoElement, {
-      onFrame: async () => {
-        onFrame(videoElement);
-      },
-      width: overlay.clientWidth, // Use overlay width
-      height: overlay.clientHeight, // Use overlay height
-      facingMode: isFrontCamera ? 'user' : 'environment', // 'user' for front camera, 'environment' for back camera
-      mirror: isFrontCamera ? false : true, // Disable mirroring for front camera, enable for back camera
-    });
-    this.camera = camera;
+    // Bind the methods
+    this.start = this.start.bind(this);
+    this.stop = this.stop.bind(this);
+    this.handleFrame = this.handleFrame.bind(this);
+    
+    // Request animation frame ID
+    this.rafId = null;
   }
 
-  start() {
-    this.camera.start();
+  async start() {
+    try {
+      // Configure camera constraints
+      const constraints = {
+        video: {
+          facingMode: this.isFrontCamera ? 'user' : 'environment',
+          width: { ideal: this.videoElement.parentElement.clientWidth },
+          height: { ideal: this.videoElement.parentElement.clientHeight }
+        }
+      };
+
+      // Get camera stream
+      this.stream = await navigator.mediaDevices.getUserMedia(constraints);
+      
+      // Set video source
+      this.videoElement.srcObject = this.stream;
+      
+      // Always apply mirroring (scaleX(-1) mirrors horizontally)
+      this.videoElement.style.transform = 'scaleX(-1)';
+      
+      // Wait for video to be ready
+      await new Promise((resolve) => {
+        this.videoElement.onloadedmetadata = () => {
+          this.videoElement.play();
+          resolve();
+        };
+      });
+
+      // Start frame processing
+      this.handleFrame();
+    } catch (error) {
+      console.error('Error starting camera:', error);
+      throw error;
+    }
   }
 
   stop() {
-    this.camera.stop();
+    if (this.rafId) {
+      cancelAnimationFrame(this.rafId);
+      this.rafId = null;
+    }
+    
+    if (this.stream) {
+      this.stream.getTracks().forEach(track => track.stop());
+      this.stream = null;
+    }
+    
+    this.videoElement.srcObject = null;
+    this.videoElement.style.transform = 'scaleX(1)';
+  }
+
+  handleFrame() {
+    if (this.stream) {
+      this.onFrame(this.videoElement);
+      this.rafId = requestAnimationFrame(this.handleFrame);
+    }
+  }
+
+  // Optional: Method to toggle between front and back camera
+  async toggleCamera() {
+    this.stop();
+    this.isFrontCamera = !this.isFrontCamera;
+    await this.start();
   }
 }

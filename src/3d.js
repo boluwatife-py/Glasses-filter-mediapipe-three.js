@@ -165,7 +165,7 @@ const initializeViewer = (modelPath) => {
     });
 };
 
-initializeViewer("/3d/black-glasses/glasses.glb");
+initializeViewer("/3d/glasses/glasses.glb");
 
 // document.head.insertAdjacentHTML("beforeend", `
 //   <style>

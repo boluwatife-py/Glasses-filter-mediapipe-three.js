@@ -32,8 +32,8 @@ export class CameraFrameProvider {
       // Set video source
       this.videoElement.srcObject = this.stream;
       
-      // Always apply mirroring (scaleX(-1) mirrors horizontally)
-      this.videoElement.style.transform = 'scaleX(-1)';
+      // Apply mirroring for front camera (scaleX(-1) mirrors horizontally)
+      this.videoElement.style.transform = this.isFrontCamera ? 'scaleX(-1)' : 'scaleX(1)';
       
       // Wait for video to be ready
       await new Promise((resolve) => {
@@ -63,6 +63,7 @@ export class CameraFrameProvider {
     }
     
     this.videoElement.srcObject = null;
+    // Reset transform when stopping
     this.videoElement.style.transform = 'scaleX(1)';
   }
 
@@ -80,3 +81,23 @@ export class CameraFrameProvider {
     await this.start();
   }
 }
+
+// Example usage:
+/*
+const videoElement = document.getElementById('video');
+const overlay = document.getElementById('viewer-overlay');
+
+const camera = new CameraFrameProvider(videoElement, (video) => {
+  // Your frame processing logic here
+  console.log('New frame available');
+});
+
+// Start the camera
+camera.start();
+
+// To stop:
+// camera.stop();
+
+// To switch cameras:
+// camera.toggleCamera();
+*/

@@ -39,14 +39,20 @@ export class SceneManager {
   }
 
   buildLighting() {
-    // Ambient light for overall illumination
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1); // Soft white light, 50% intensity
+    const ambientLight = new THREE.AmbientLight(0xffffff, 2); // Soft white light, 50% intensity
     this.scene.add(ambientLight);
 
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position.set(0, 1, 1).normalize();
-    this.scene.add(directionalLight);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+    const dh = new THREE.DirectionalLightHelper(directionalLight, 3, 'white')
+    directionalLight.position.set(0, 0, 2).normalize();
+    directionalLight.shadow.mapSize.width = 2048;
+    this.scene.add(directionalLight, dh);
+
+    // const pointLight = new THREE.PointLight(0xfffff, 5);
+    // pointLight.position.set(0, 1, 0)
+    // this.scene.add(pointLight);
+
 
 
     const backLight = new THREE.DirectionalLight(0xffffff, 0.3);

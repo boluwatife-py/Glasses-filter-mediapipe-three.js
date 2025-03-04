@@ -146,8 +146,8 @@ const initializeViewer = (modelPath) => {
         },
         (error) => {
             console.error("Loading failed:", error);
-            loadingIndicator.textContent = "Error: Could not load model";
-            loadingIndicator.style.background = "rgba(255, 0, 0, 0.8)";
+            // loadingIndicator.textContent = "Error: Could not load model";
+            // loadingIndicator.style.background = "rgba(255, 0, 0, 0.8)";
             // if (loadingIndicator.parentNode) loadingIndicator.parentNode.removeChild(loadingIndicator);
         }
     );

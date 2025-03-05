@@ -4,7 +4,11 @@ import { FacemeshLandmarksProvider } from './js/facemesh/landmarks_provider';
 import { SceneManager } from "./js/three_components/scene_manager";
 
 const overlay = document.getElementById("viewer-overlay");
+const overlayLoader = document.querySelector(".loader-over"); // Loader element
+
 async function main() {
+  console.log("Initializing AR...");
+
   const video = document.querySelector('.input_video');
   const canvas = document.querySelector('.output_canvas');
 
@@ -23,8 +27,8 @@ async function main() {
     try {
       await facemeshLandmarksProvider.send(video);
     } catch (e) {
+      console.error("Camera not supported on this device", e);
       alert("Not Supported on your device");
-      console.error(e);
       videoFrameProvider.stop();
     }
   };
@@ -35,16 +39,23 @@ async function main() {
     sceneManager.animate();
   }
 
-  sceneManager = new SceneManager(canvas, debug, useOrtho);
-  facemeshLandmarksProvider = new FacemeshLandmarksProvider(onLandmarks);
+  try {
+    console.log("Setting up SceneManager...");
+    sceneManager = new SceneManager(canvas, debug, useOrtho);
 
-  // Use camera directly (no video file)
-  videoFrameProvider = new CameraFrameProvider(video, onFrame);
+    console.log("Initializing FaceMesh...");
+    facemeshLandmarksProvider = new FacemeshLandmarksProvider(onLandmarks);
+    await facemeshLandmarksProvider.initialize();
 
-  await facemeshLandmarksProvider.initialize();
-  videoFrameProvider.start();
+    console.log("Starting Camera...");
+    videoFrameProvider = new CameraFrameProvider(video, onFrame);
+    videoFrameProvider.start();
 
-  animate();
+    overlayLoader.style.display = 'none';
+    animate();
+  } catch (error) {
+    console.error("Error initializing AR:", error);
+  }
 }
 
 let arInitialized = false;

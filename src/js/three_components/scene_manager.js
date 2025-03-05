@@ -35,6 +35,7 @@ export class SceneManager {
     this.buildLighting(); // Add lighting
     this.buildVideoBg();
     this.buildGlasses();
+    window.addEventListener("resize", () => this.resize(), false);
   }
 
   buildLighting() {
@@ -42,14 +43,14 @@ export class SceneManager {
     const ambientLight = new THREE.AmbientLight(0xffffff, 1); // Soft white light, 50% intensity
     this.scene.add(ambientLight);
 
-    // Directional light for directional illumination (like sunlight)
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1); // Bright white light, 100% intensity
-    directionalLight.position.set(0, 1, 1).normalize(); // Positioned above and slightly in front
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(0, 1, 1).normalize();
     this.scene.add(directionalLight);
 
-    // Optional: Add a second directional light from the opposite side
-    const backLight = new THREE.DirectionalLight(0xffffff, 0.3); // Dimmer light, 30% intensity
-    backLight.position.set(0, -1, -1).normalize(); // Positioned below and behind
+
+    const backLight = new THREE.DirectionalLight(0xffffff, 0.3);
+    backLight.position.set(0, -1, -1).normalize();
     this.scene.add(backLight);
   }
 
@@ -104,25 +105,17 @@ export class SceneManager {
 
   resizeRendererToDisplaySize() {
     const canvas = this.renderer.domElement;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
 
-    if (
-      this.videoWidth != canvas.clientWidth ||
-      this.videoHeight != canvas.clientHeight
-    ) {
-      const width = this.videoWidth;
-      const height = this.videoHeight;
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
-    }
-
-    const width = canvas.clientWidth | 0;
-    const height = canvas.clientHeight | 0;
     const needResize = canvas.width !== width || canvas.height !== height;
     if (needResize) {
       this.renderer.setSize(width, height, false);
     }
     return needResize;
   }
+
+
 
   updateCamera() {
     this.camera.aspect = this.videoWidth / this.videoHeight;
@@ -163,6 +156,7 @@ export class SceneManager {
     this.videoWidth = videoWidth;
     this.videoHeight = videoHeight;
   }
+
 
   onLandmarks(image, landmarks) {
     if (image && landmarks) {

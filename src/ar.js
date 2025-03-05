@@ -3,24 +3,8 @@ import { CameraFrameProvider } from './js/camera_frame_provider';
 import { FacemeshLandmarksProvider } from './js/facemesh/landmarks_provider';
 import { SceneManager } from "./js/three_components/scene_manager";
 
-const template = `
-<div class="video-container">
-  <span class="loader">
-    Loading ...
-  </span>
-  <div>
-    <h2>Processed Video</h2>
-    <canvas class="output_canvas"></canvas>
-  </div>
-  <video class="input_video" style="display: none;" playsinline></video>
-</div>
-`;
-
-document.querySelector("#app").innerHTML = template;
-
+const overlay = document.getElementById("viewer-overlay");
 async function main() {
-  document.querySelector(".video-container").classList.add("loading");
-
   const video = document.querySelector('.input_video');
   const canvas = document.querySelector('.output_canvas');
 
@@ -47,7 +31,7 @@ async function main() {
 
   function animate() {
     requestAnimationFrame(animate);
-    sceneManager.resize(window.innerWidth, window.innerHeight);
+    sceneManager.resize(overlay.clientWidth, overlay.clientHeight);
     sceneManager.animate();
   }
 
@@ -61,8 +45,15 @@ async function main() {
   videoFrameProvider.start();
 
   animate();
-
-  document.querySelector(".video-container").classList.remove("loading");
 }
 
-main();
+let arInitialized = false;
+
+const portal = document.getElementById("bg");
+portal.addEventListener("click", () => {
+  overlay.classList.add("opened");
+  if (!arInitialized) {
+    arInitialized = true;
+    main();
+  }
+});

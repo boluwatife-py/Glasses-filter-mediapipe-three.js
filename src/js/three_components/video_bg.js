@@ -49,7 +49,9 @@ export class VideoBackground {
   createMaterial() {
     if (this.image == null) {
       return new THREE.MeshBasicMaterial({
-        color: new THREE.Color(0xffffff)
+        color: new THREE.Color(0x000000 ),
+        transparent: true,
+        opacity: 0
       });
     }
     let material = new THREE.MeshBasicMaterial({

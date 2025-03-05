@@ -39,7 +39,7 @@ export class SceneManager {
 
   buildLighting() {
     // Ambient light for overall illumination
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // Soft white light, 50% intensity
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1); // Soft white light, 50% intensity
     this.scene.add(ambientLight);
 
     // Directional light for directional illumination (like sunlight)

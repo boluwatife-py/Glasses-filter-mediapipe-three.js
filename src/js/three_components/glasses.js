@@ -50,7 +50,7 @@ export class Glasses {
     // Points for reference
     // https://raw.githubusercontent.com/google/mediapipe/master/mediapipe/modules/face_geometry/data/canonical_face_model_uv_visualization.png
 
-    let midEyes = scaleLandmark(this.landmarks[168], this.width, this.height);
+    let midEyes = scaleLandmark(this.landmarks[6], this.width, this.height);
     let leftEyeInnerCorner = scaleLandmark(this.landmarks[463], this.width, this.height);
     let rightEyeInnerCorner = scaleLandmark(this.landmarks[243], this.width, this.height);
     let noseBottom = scaleLandmark(this.landmarks[2], this.width, this.height);

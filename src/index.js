@@ -1,4 +1,4 @@
-import "./styles.css";
+// import "./styles.css";
 import { CameraFrameProvider } from './js/camera_frame_provider';
 import { FacemeshLandmarksProvider } from './js/facemesh/landmarks_provider';
 import { SceneManager } from "./js/three_components/scene_manager";

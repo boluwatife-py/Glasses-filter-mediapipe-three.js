@@ -49,7 +49,7 @@ export class VideoBackground {
   createMaterial() {
     if (this.image == null) {
       return new THREE.MeshBasicMaterial({
-        color: new THREE.Color(0x000000 ),
+        color: new THREE.Color(0xffffff ),
         transparent: true,
         opacity: 0
       });
@@ -71,8 +71,8 @@ export class VideoBackground {
     }
 
     if (this.sizeUpdated) {
-      this.removePlaneFromScene();
-      this.createNewPlane();
+      // this.removePlaneFromScene();
+      // this.createNewPlane();
       this.sizeUpdated = false;
       this.imageUpdated = false;
     }

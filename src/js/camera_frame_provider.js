@@ -5,45 +5,43 @@ export class CameraFrameProvider {
     this.stream = null;
     // Default to front camera
     this.isFrontCamera = true; // You may need to detect this dynamically
-    
+
     // Bind the methods
     this.start = this.start.bind(this);
     this.stop = this.stop.bind(this);
     this.handleFrame = this.handleFrame.bind(this);
-    
+
     // Request animation frame ID
     this.rafId = null;
   }
 
   async start() {
     try {
-      // Configure camera constraints
+
       const constraints = {
         video: {
           facingMode: this.isFrontCamera ? 'user' : 'environment',
-          width: { ideal: this.videoElement.parentElement.clientWidth },
-          height: { ideal: this.videoElement.parentElement.clientHeight }
+          width: this.width,
+          height: this.height
         }
       };
 
-      // Get camera stream
+
       this.stream = await navigator.mediaDevices.getUserMedia(constraints);
-      
-      // Set video source
+
+
       this.videoElement.srcObject = this.stream;
-      
-      // Apply mirroring for front camera (scaleX(-1) mirrors horizontally)
+
+
       this.videoElement.style.transform = this.isFrontCamera ? 'scaleX(-1)' : 'scaleX(1)';
-      
-      // Wait for video to be ready
+
+
       await new Promise((resolve) => {
         this.videoElement.onloadedmetadata = () => {
           this.videoElement.play();
           resolve();
         };
       });
-
-      // Start frame processing
       this.handleFrame();
     } catch (error) {
       console.error('Error starting camera:', error);
@@ -56,14 +54,13 @@ export class CameraFrameProvider {
       cancelAnimationFrame(this.rafId);
       this.rafId = null;
     }
-    
+
     if (this.stream) {
       this.stream.getTracks().forEach(track => track.stop());
       this.stream = null;
     }
-    
+
     this.videoElement.srcObject = null;
-    // Reset transform when stopping
     this.videoElement.style.transform = 'scaleX(1)';
   }
 
@@ -74,30 +71,10 @@ export class CameraFrameProvider {
     }
   }
 
-  // Optional: Method to toggle between front and back camera
+  
   async toggleCamera() {
     this.stop();
     this.isFrontCamera = !this.isFrontCamera;
     await this.start();
   }
 }
-
-// Example usage:
-/*
-const videoElement = document.getElementById('video');
-const overlay = document.getElementById('viewer-overlay');
-
-const camera = new CameraFrameProvider(videoElement, (video) => {
-  // Your frame processing logic here
-  console.log('New frame available');
-});
-
-// Start the camera
-camera.start();
-
-// To stop:
-// camera.stop();
-
-// To switch cameras:
-// camera.toggleCamera();
-*/

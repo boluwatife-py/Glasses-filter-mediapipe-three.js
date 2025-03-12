@@ -1,140 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <link rel="stylesheet" href="./src/styles.css" crossorigin="anonymous" />
-
-  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-  <link rel="icon" type="image/png" sizes="32x32" href="./src/images/favicon-32x32.png" />
-
-  <title>E-commerce product page</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mediapipe Three FaceEffects</title>
 </head>
-
 <body>
-  <section class="hero">
-    <div class="overlay"></div>
-
-    <header class="header">
-      <div class="logo">
-        <svg width="200" height="50" viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg">
-          <text x="10" y="35" font-family="cursive" font-size="32" font-weight="bold" fill="black">glasses</text>
-        </svg>
-
-      </div>
-      <ul class="nav-list">
-        <li class="list-ele">Collections</li>
-        <li class="list-ele">Men</li>
-        <li class="list-ele">Women</li>
-        <li class="list-ele">About</li>
-        <li class="list-ele">Contact</li>
-      </ul>
-
-      <ion-icon class="nav-cart" name="cart-outline"></ion-icon>
-      <span class="nav-cart-after">20</span>
-
-      <div class="avatar"></div>
-      <div class="cart">
-        <p class="cart-heading">Cart</p>
-        <div class="empty-cart show">
-          <p>Your cart is empty.</p>
-        </div>
-        <div class="cart-bottom">
-          <div class="cart-info">
-            <img class="cart-image" alt="product image" src="./src/images/image-product-1.jpg" />
-            <p class="cart-text">
-              Fall Limited Edition Sneakers <br />
-              $125.00 x <span class="count-items">1</span>
-              <span class="current-price">$375.00</span>
-            </p>
-            <ion-icon class="delete" name="trash-outline"></ion-icon>
-          </div>
-          <button class="btn-checkout">Checkout</button>
-        </div>
-      </div>
-    </header>
-
-    <div class="container">
-      <div class="floating-img">
-        <ion-icon class="close-icon" name="close-outline"></ion-icon>
-
-        <button class="btn-swipe btn-swipe-left">
-          <ion-icon name="chevron-back-outline"></ion-icon>
-        </button>
-        <div class="left-imgs">
-          <img class="main-img-float" alt="product image" src="./src/images/image-product-1.jpg" />
-        </div>
-      </div>
-      <div class="left-imgs">
-        <div class="bg" title="click me">
-          <div id="bg"></div>
-        </div>
-      </div>
-      <div class="right-text">
-        <span class="heading-secondary">Sneaker Company</span>
-        <h1 class="heading-primary">Fall Limited Edition Goggles</h1>
-        <p class="description">
-          These low-profile goggles are your perfect casual companion.
-          Featuring a durable latte outer skin, with sweat proof and sweat resistant.
-        </p>
-
-        <h2 class="price-discount">$125.00</h2>
-
-        <p class="price-original">$250.00</p>
-        <div class="buttons">
-          <div class="btn-left">
-            <button class="minus">
-              <svg width="12" height="4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                <defs>
-                  <path
-                    d="M11.357 3.332A.641.641 0 0 0 12 2.69V.643A.641.641 0 0 0 11.357 0H.643A.641.641 0 0 0 0 .643v2.046c0 .357.287.643.643.643h10.714Z"
-                    id="a" />
-                </defs>
-                <use fill="#FF7E1B" fill-rule="nonzero" xlink:href="#a" />
-              </svg>
-            </button>
-            <span class="cart-number">0</span>
-            <button class="plus">
-              <svg width="12" height="12" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                <defs>
-                  <path
-                    d="M12 7.023V4.977a.641.641 0 0 0-.643-.643h-3.69V.643A.641.641 0 0 0 7.022 0H4.977a.641.641 0 0 0-.643.643v3.69H.643A.641.641 0 0 0 0 4.978v2.046c0 .356.287.643.643.643h3.69v3.691c0 .356.288.643.644.643h2.046a.641.641 0 0 0 .643-.643v-3.69h3.691A.641.641 0 0 0 12 7.022Z"
-                    id="b" />
-                </defs>
-                <use fill="#FF7E1B" fill-rule="nonzero" xlink:href="#b" />
-              </svg>
-            </button>
-          </div>
-          <div class="btn-right">
-            <ion-icon name="cart-outline"></ion-icon>
-            <button class="add-cart">Add to cart</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <video class="input_video" style="display: none;" playsinline></video>
-  <section class="viewer-overlay container" id="viewer-overlay">
-    <canvas class="output_canvas"></canvas>
-    <div class="close">&times;</div>
+  <div id="app">
     
-    <div class="loader-over">
-      <div class="square" id="sq1"></div>
-      <div class="square" id="sq2"></div>
-      <div class="square" id="sq3"></div>
-      <div class="square" id="sq4"></div>
-      <div class="square" id="sq5"></div>
-      <div class="square" id="sq6"></div>
-      <div class="square" id="sq7"></div>
-      <div class="square" id="sq8"></div>
-      <div class="square" id="sq9"></div>
-    </div>
-  </section>
+  </div>
 </body>
-<script type="module" src="./src/ar.js"></script>
-<script type="module" src="./src/3d.js"></script>
-
+<script type="module" src="/src/index.js"></script>
 </html>

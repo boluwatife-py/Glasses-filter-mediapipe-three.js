@@ -27,7 +27,7 @@ export class VideoBackground {
     const geometry = this.createGeometry();
     const material = this.createMaterial();
     this.plane = new THREE.Mesh(geometry, material);
-    // this.updateDimensions();
+    this.updateDimensions();
     this.addPlaneToScene();
   }
 

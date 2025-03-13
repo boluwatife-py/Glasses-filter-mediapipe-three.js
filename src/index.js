@@ -38,7 +38,7 @@ async function main() {
   let facemeshLandmarksProvider;
   let videoFrameProvider;
 
-  const onLandmarks = ({image, landmarks}) => {
+  const onLandmarks = ({ image, landmarks }) => {
     sceneManager.onLandmarks(image, landmarks);
   }
 
@@ -48,11 +48,11 @@ async function main() {
     } catch (e) {
       alert("Not Supported on your device")
       console.error(e);
-      videoFrameProvider.stop();      
+      videoFrameProvider.stop();
     }
   }
 
-  function animate () {
+  function animate() {
     requestAnimationFrame(animate);
     sceneManager.resize(video.clientWidth, video.clientHeight);
     sceneManager.animate();
@@ -61,21 +61,21 @@ async function main() {
   sceneManager = new SceneManager(canvas, debug, useOrtho);
   facemeshLandmarksProvider = new FacemeshLandmarksProvider(onLandmarks);
 
-  if (confirm("Use Camera?")) {
-    // unload video
-    video.pause();
-    video.querySelector("source").remove();
-    video.removeAttribute('src');
-    video.load();
+  // if (confirm("Use Camera?")) {
+  // unload video
+  video.pause();
+  video.querySelector("source").remove();
+  video.removeAttribute('src');
+  video.load();
 
-    videoFrameProvider = new CameraFrameProvider(video, onFrame);
+  videoFrameProvider = new CameraFrameProvider(video, onFrame);
 
-  } else {
+  // } else {
 
-    videoFrameProvider = new VideoFrameProvider(video, onFrame);
+  //   videoFrameProvider = new VideoFrameProvider(video, onFrame);
 
-  }
-  
+  // }
+
   await facemeshLandmarksProvider.initialize();
   videoFrameProvider.start();
 

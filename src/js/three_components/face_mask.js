@@ -10,8 +10,10 @@ export class FaceMask {
     this.width = width;
     this.height = height;
     this.material = new THREE.MeshStandardMaterial({
-      color: 0xaaaaaa, // Gray for visibility without video
-      side: THREE.DoubleSide
+      color: 0xaaaaaa,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0
     });
     this.material.receiveShadow = true; // Ready for shadows
   }

@@ -21,7 +21,7 @@ export class Glasses {
   }
 
   async loadGlasses() {
-    this.glasses = await loadModel('/3d/black-glasses/scene.gltf');
+    this.glasses = await loadModel('/3d/glasses/glasses.glb');
     const bbox = new THREE.Box3().setFromObject(this.glasses);
     const size = bbox.getSize(new THREE.Vector3());
     this.scaleFactor = size.x;
@@ -45,12 +45,12 @@ export class Glasses {
   updateGlasses() {
     if (!this.glasses || !this.landmarks) return;
 
-    let midEyes = scaleLandmark(this.landmarks[168], this.width, this.height);
+    let midEyes = scaleLandmark(this.landmarks[6], this.width, this.height);
     let leftEyeInnerCorner = scaleLandmark(this.landmarks[463], this.width, this.height);
     let rightEyeInnerCorner = scaleLandmark(this.landmarks[243], this.width, this.height);
     let noseBottom = scaleLandmark(this.landmarks[2], this.width, this.height);
-    let leftEyeUpper1 = scaleLandmark(this.landmarks[264], this.width, this.height);
-    let rightEyeUpper1 = scaleLandmark(this.landmarks[34], this.width, this.height);
+    let leftEyeUpper1 = scaleLandmark(this.landmarks[356], this.width, this.height);
+    let rightEyeUpper1 = scaleLandmark(this.landmarks[127], this.width, this.height);
 
     this.glasses.position.set(midEyes.x, midEyes.y, midEyes.z);
 

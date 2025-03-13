@@ -32,7 +32,7 @@ async function main() {
   const canvas = document.querySelector('.output_canvas');
 
   const useOrtho = true;
-  const debug = true;
+  const debug = false;
 
   let sceneManager;
   let facemeshLandmarksProvider;

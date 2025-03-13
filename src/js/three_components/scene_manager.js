@@ -21,10 +21,10 @@ export class SceneManager {
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.fov = 63;
+    this.buildVideoBg();
     this.buildCamera();
     this.buildControls();
     this.buildLighting();
-    // this.buildVideoBg(); // Uncomment later
     this.buildFaceMask();
     this.buildGlasses();
   }
@@ -34,7 +34,7 @@ export class SceneManager {
     this.scene.add(ambientLight);
 
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position.set(0, 10, 10);
+    directionalLight.position.set(0, 0.2, 1);
     directionalLight.castShadow = true;
     directionalLight.shadow.mapSize.width = 2048;
     directionalLight.shadow.mapSize.height = 2048;
@@ -121,7 +121,7 @@ export class SceneManager {
       this.renderer.setSize(renderWidth, renderHeight, false);
       this.faceMask.updateDimensions(renderWidth, renderHeight);
       this.glasses.updateDimensions(renderWidth, renderHeight);
-      // this.videoBg.updateDimensions(renderWidth, renderHeight);
+      this.videoBg.updateDimensions(renderWidth, renderHeight);
       this.updateCamera();
     }
     return needResize;
@@ -147,8 +147,8 @@ export class SceneManager {
       this.controls.update();
     }
 
-    this.resizeRendererToDisplaySize(); // Still called every frame, but updates are conditional
-    // this.videoBg.update();
+    this.resizeRendererToDisplaySize();
+    this.videoBg.update();
     this.faceMask.update();
     this.glasses.update();
     this.renderer.render(this.scene, this.camera);
@@ -161,7 +161,7 @@ export class SceneManager {
 
   onLandmarks(image, landmarks) {
     if (image && landmarks) {
-      // this.videoBg.setImage(image);
+      this.videoBg.setImage(image);
       this.faceMask.updateLandmarks(landmarks);
       this.glasses.updateLandmarks(landmarks);
     }

@@ -1,12 +1,12 @@
 body {
-  background: #000;
+  background: #690183;
   color: #fff;
 }
 /* column wise on mobile */
 .video-container {
-  display: flex;
-  flex-direction: column;
-  max-width: 1024px;
+  /* display: flex;
+  flex-direction: column; */
+  /* max-width: 1024px; */
   margin: 0 auto;
   position: relative;
 }
@@ -51,6 +51,7 @@ body {
 .input_video {
   width: 100%;
   height: auto;
+  transform: scaleX(-1);
 }
 
 .output_canvas {

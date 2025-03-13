@@ -35,7 +35,7 @@ export class VideoBackground {
     if (this.plane != null) {
       this.updateDimensions();
       this.scene.add(this.plane);
-      this.plane.position.set(0, 0, -50);
+      this.plane.position.set(0, 0, -100);
     }
   }
 

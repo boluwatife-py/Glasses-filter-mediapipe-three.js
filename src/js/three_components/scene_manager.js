@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { FaceMask } from './face_mask';
 import { Glasses } from './glasses';
 import { VideoBackground } from './video_bg';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
@@ -21,42 +20,14 @@ export class SceneManager {
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.fov = 63;
-    this.buildVideoBg();
     this.buildCamera();
     this.buildControls();
-    this.buildLighting();
-    this.buildFaceMask();
     this.buildGlasses();
-  }
-
-  buildLighting() {
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    this.scene.add(ambientLight);
-
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position.set(0, 0.2, 1);
-    directionalLight.castShadow = true;
-    directionalLight.shadow.mapSize.width = 2048;
-    directionalLight.shadow.mapSize.height = 2048;
-    directionalLight.shadow.camera.near = 0.5;
-    directionalLight.shadow.camera.far = 50;
-    directionalLight.shadow.camera.left = -10;
-    directionalLight.shadow.camera.right = 10;
-    directionalLight.shadow.camera.top = 10;
-    directionalLight.shadow.camera.bottom = -10;
-    this.scene.add(directionalLight);
+    this.buildVideoBg();
   }
 
   buildVideoBg() {
     this.videoBg = new VideoBackground(
-      this.scene,
-      this.renderer.domElement.width,
-      this.renderer.domElement.height
-    );
-  }
-
-  buildFaceMask() {
-    this.faceMask = new FaceMask(
       this.scene,
       this.renderer.domElement.width,
       this.renderer.domElement.height
@@ -119,7 +90,6 @@ export class SceneManager {
     const needResize = canvas.width !== renderWidth || canvas.height !== renderHeight;
     if (needResize) {
       this.renderer.setSize(renderWidth, renderHeight, false);
-      this.faceMask.updateDimensions(renderWidth, renderHeight);
       this.glasses.updateDimensions(renderWidth, renderHeight);
       this.videoBg.updateDimensions(renderWidth, renderHeight);
       this.updateCamera();
@@ -149,7 +119,6 @@ export class SceneManager {
 
     this.resizeRendererToDisplaySize();
     this.videoBg.update();
-    this.faceMask.update();
     this.glasses.update();
     this.renderer.render(this.scene, this.camera);
   }
@@ -162,7 +131,6 @@ export class SceneManager {
   onLandmarks(image, landmarks) {
     if (image && landmarks) {
       this.videoBg.setImage(image);
-      this.faceMask.updateLandmarks(landmarks);
       this.glasses.updateLandmarks(landmarks);
     }
   }

@@ -1,21 +1,10 @@
 body {
-  background: #690183;
+  background-color: rgb(136, 136, 136);
   color: #fff;
-}
-/* column wise on mobile */
-.video-container {
-  /* display: flex;
-  flex-direction: column; */
-  /* max-width: 1024px; */
-  margin: 0 auto;
-  position: relative;
 }
 
 .video-container > div {
-  flex: 1;
-  margin-bottom: 20px;
-  margin-left: 20px;
-  margin-right: 20px;
+  margin: 20px;
 }
 
 .video-container h2 {
@@ -49,12 +38,16 @@ body {
 }
 
 .input_video {
-  width: 100%;
+  width: calc(100% - 41px);
   height: auto;
-  transform: scaleX(-1);
+  inset: 0;
+  visibility: hidden;
+  position: absolute;
+  margin: 20px;
 }
 
 .output_canvas {
   width: 100%;
   height: auto;
+  border-radius: 20px;
 }

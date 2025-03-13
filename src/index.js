@@ -1,5 +1,4 @@
 import "./styles.css";
-import { VideoFrameProvider } from './js/video_frame_provider';
 import { CameraFrameProvider } from './js/camera_frame_provider';
 import { FacemeshLandmarksProvider } from './js/facemesh/landmarks_provider';
 import { SceneManager } from "./js/three_components/scene_manager";
@@ -10,13 +9,10 @@ const template = `
     Loading ...
   </span>
   <div>
-    <h2>Original Video</h2>
     <video class="input_video" controls playsinline>
-      <source  src="/video/videoplayback2.mp4">
     </video>
   </div>
   <div>
-    <h2>Processed Video</h2>
     <canvas class="output_canvas"></canvas>
   </div>
 </div>
@@ -61,20 +57,9 @@ async function main() {
   sceneManager = new SceneManager(canvas, debug, useOrtho);
   facemeshLandmarksProvider = new FacemeshLandmarksProvider(onLandmarks);
 
-  // if (confirm("Use Camera?")) {
-  // unload video
-  video.pause();
-  video.querySelector("source").remove();
-  video.removeAttribute('src');
-  video.load();
-
-  videoFrameProvider = new CameraFrameProvider(video, onFrame);
-
-  // } else {
-
-  //   videoFrameProvider = new VideoFrameProvider(video, onFrame);
-
-  // }
+  if (confirm("Use Camera?")) {
+    videoFrameProvider = new CameraFrameProvider(video, onFrame);
+  }
 
   await facemeshLandmarksProvider.initialize();
   videoFrameProvider.start();

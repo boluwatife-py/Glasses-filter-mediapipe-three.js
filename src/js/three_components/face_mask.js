@@ -13,7 +13,7 @@ export class FaceMask {
       color: 0xaaaaaa,
       side: THREE.DoubleSide,
       transparent: true,
-      opacity: 0
+      opacity: 1
     });
     this.material.receiveShadow = true; // Ready for shadows
   }

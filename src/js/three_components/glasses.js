@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { scaleLandmark } from '../facemesh/landmarks_helpers';
+import { FaceMask } from './face_mask';
 
 function loadModel(file) {
   return new Promise((res, rej) => {
@@ -18,6 +19,8 @@ export class Glasses {
     this.landmarks = null;
     this.glasses = null;
     this.loadGlasses();
+    this.buildLighting()
+    this.buildFaceMask()
   }
 
   async loadGlasses() {
@@ -35,15 +38,17 @@ export class Glasses {
     this.width = width;
     this.height = height;
     this.needsUpdate = true;
+    this.faceMask.updateDimensions(width, height)
   }
 
   updateLandmarks(landmarks) {
     this.landmarks = landmarks;
     this.needsUpdate = true;
+    this.faceMask.updateLandmarks(landmarks)
   }
 
   updateGlasses() {
-    if (!this.glasses || !this.landmarks) return;
+    if (!this.glasses || !this.landmarks) this.removeGlasses();
 
     let midEyes = scaleLandmark(this.landmarks[6], this.width, this.height);
     let leftEyeInnerCorner = scaleLandmark(this.landmarks[463], this.width, this.height);
@@ -89,6 +94,10 @@ export class Glasses {
     this.glasses.rotation.set(xRot, yRot, zRot);
   }
 
+  updateFaceMask(){
+    this.faceMask.updateDimensions(this.width, this.height)
+  }
+
   addGlasses() {
     if (this.glasses && !this.scene.getObjectByName('glasses')) {
       this.scene.add(this.glasses);
@@ -106,12 +115,40 @@ export class Glasses {
       const shouldShow = !!this.landmarks;
       const inScene = !!this.scene.getObjectByName('glasses');
       if (shouldShow) {
+        this.faceMask.update()
         this.updateGlasses();
+        this.updateFaceMask()
         if (!inScene) this.addGlasses();
       } else if (inScene) {
         this.removeGlasses();
       }
       this.needsUpdate = false;
     }
+  }
+
+  buildLighting() {
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    this.scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(0, 0.2, 1);
+    directionalLight.castShadow = true;
+    directionalLight.shadow.mapSize.width = 2048;
+    directionalLight.shadow.mapSize.height = 2048;
+    directionalLight.shadow.camera.near = 0.5;
+    directionalLight.shadow.camera.far = 50;
+    directionalLight.shadow.camera.left = -10;
+    directionalLight.shadow.camera.right = 10;
+    directionalLight.shadow.camera.top = 10;
+    directionalLight.shadow.camera.bottom = -10;
+    this.scene.add(directionalLight);
+  }
+
+  buildFaceMask() {
+    this.faceMask = new FaceMask(
+      this.scene,
+      this.width,
+      this.height
+    );
   }
 }

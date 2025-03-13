@@ -13,9 +13,9 @@ export class FaceMask {
       color: 0xaaaaaa,
       side: THREE.DoubleSide,
       transparent: true,
-      opacity: 1
+      opacity: 0
     });
-    this.material.receiveShadow = true; // Ready for shadows
+    this.material.receiveShadow = true;
   }
 
   updateDimensions(width, height) {

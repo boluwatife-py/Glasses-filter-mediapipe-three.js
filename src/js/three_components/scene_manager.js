@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { Glasses } from './glasses';
 import { VideoBackground } from './video_bg';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { log } from 'three/tsl';
 
 /**
  * Finds distance to position perspective camera
@@ -12,12 +13,7 @@ const cameraDistance = (height, fov) => {
   return (height / 2) / Math.tan((fov / 2) * Math.PI / 180);
 };
 
-/**
- * Call these methods:
- * 1) animate inside requestAnimationFrame
- * 2) resize inside requestAnimationFrame
- * 3) onLandmarks on receiving new face landmarks
- */
+
 export class SceneManager {
   constructor(canvas, debug = false, useOrtho = true) {
     this.canvas = canvas;
@@ -97,20 +93,21 @@ export class SceneManager {
     this.camera = new THREE.PerspectiveCamera(
       this.fov,
       this.renderer.domElement.width / this.renderer.domElement.height,
-      1.0, // near
-      10000 // far
+      1.0,
+      1000
     );
     this.camera.position.z = cameraDistance(this.renderer.domElement.height, this.fov);
   }
 
   resizeRendererToDisplaySize() {
     const canvas = this.renderer.domElement;
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    const width = this.videoWidth;
+    const height = this.videoHeight;
 
     const needResize = canvas.width !== width || canvas.height !== height;
     if (needResize) {
-      this.renderer.setSize(width, height, false);
+      this.renderer.setSize(width, height, true);
+
     }
     return needResize;
   }
@@ -118,7 +115,7 @@ export class SceneManager {
 
 
   updateCamera() {
-    this.camera.aspect = this.videoWidth / this.videoHeight;
+    this.camera.aspect = this.renderer.domElement.width / this.renderer.domElement.height;
     if (this.camera.type === 'OrthographicCamera') {
       this.camera.top = this.videoHeight / 2;
       this.camera.bottom = -this.videoHeight / 2;
@@ -159,9 +156,13 @@ export class SceneManager {
 
 
   onLandmarks(image, landmarks) {
-    if (image && landmarks) {
+    if (image) {
       this.videoBg.setImage(image);
+    }
+    if(landmarks){
       this.glasses.updateLandmarks(landmarks);
+    }else{
+      this.glasses.removeGlasses()
     }
   }
 }

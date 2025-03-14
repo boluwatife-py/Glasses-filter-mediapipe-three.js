@@ -25,7 +25,7 @@ export class FacemeshLandmarksProvider {
     let onResults = this.onResults.bind(this);
 
     this.faceMesh = new FaceMesh({locateFile: (file) => {
-      let url =  `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
+      let url =  `/mediapipe/face_mesh/${file}`;
       return url
     }});
   

@@ -129,16 +129,16 @@ export class Glasses {
   }
 
   update() {
-    if (this.needsUpdate) {
-      let inScene = !!this.scene.getObjectByName('glasses');
-      let shouldShow = !!this.landmarks;
-      if (inScene) {
-        shouldShow ? this.updateGlasses() : this.removeGlasses();
-      } else {
-        if (shouldShow) {
-          this.addGlasses();
-        }
+    if (this.needsUpdate && this.glasses) {
+      const shouldShow = !!this.landmarks;
+      const inScene = !!this.scene.getObjectByName('glasses');
+      if (shouldShow) {
+        this.updateGlasses();
+        if (!inScene) this.addGlasses();
+      } else if (inScene) {
+        this.removeGlasses();
       }
+      this.needsUpdate = false;
     }
   }
 }

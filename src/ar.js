@@ -48,7 +48,7 @@ async function main() {
     await facemeshLandmarksProvider.initialize();
 
     console.log("Starting Camera...");
-    videoFrameProvider = new CameraFrameProvider(video, onFrame);
+    videoFrameProvider = new CameraFrameProvider(video, onFrame, overlay.clientWidth, overlay.clientHeight);
     videoFrameProvider.start();
 
     overlayLoader.style.display = 'none';
